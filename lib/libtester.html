@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<!-- tester page -->
+<script src='mllib.js'></script>
+<script type='text/javascript'>
+(function(){
+	checkPerceptron();
+})();
+
+function checkPerceptron(){
+	var training = [];
+	var desired = [];
+	var testing = [];
+	var correctTestResults = [];
+	var i = 0;
+	for(i = 0; i < 100; i++){
+		var x = rand(1,100);
+		var y = rand(1,100);
+		var pt = [];
+		pt.push(x); pt.push(y);
+		training.push(pt);
+		if(x >= y) desired.push(1);
+		else desired.push(-1);
+	}
+	for(i = 0; i < 100; i++){
+		var x = rand(1,100);
+		var y = rand(1,100);
+		var pt = [];
+		pt.push(x); pt.push(y);
+		testing.push(pt);
+		if(x >= y) correctTestResults.push(1);
+		else correctTestResults.push(-1);
+	}
+
+	var p = new mllib.perceptron();
+	p.trainingData = training;
+	p.testingData = testing;
+	p.desiredOutputs = desired;
+	p.neta = 0.7;
+	p.run();
+	var i;
+	var check = 0;
+	for(i = 0; i < testing.length; i++){
+		if(correctTestResults[i] == p.testResults[i]) check++;
+	}
+	console.log('Perceptron : ' + (check / testing.length) * 100 + '% accurate');
+	//if(check) console.log("Perceptron has passed the tests.");
+	//else console.log("Perceptron has failed the tests.");	
+}
+
+function rand(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
+function deb(x){
+	console.log('#' + x);
+}
+</script>
+</html>
